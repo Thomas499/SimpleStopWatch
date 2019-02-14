@@ -51,10 +51,7 @@ class MainScreenFragment : Fragment() {
 
     private val changeTimeReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            millisecondsField.text = TimeUtil.getMillisecondsTextValue(usingService.currentMilliseconds)
-            secondsField.text = TimeUtil.getTimeUnits(usingService.totalMilliseconds)
-            minutesField.text = TimeUtil.getTimeUnits(totalMilliseconds = usingService.totalMilliseconds, timeUnit = MINUTES_KEY)
-            hoursField.text = TimeUtil.getTimeUnits(totalMilliseconds = usingService.totalMilliseconds, timeUnit = HOURS_KEY)
+            restoreValues()
         }
     }
 
