@@ -6,6 +6,21 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textViewStyle">@style/TimeTextViewStyle</item>
+    </style>
+
+    <style name="TimeTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:textSize">60sp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:fontFamily">@font/digital_7_mono</item>
+        <item name="android:textColor">@color/textColorPrimary</item>
+        <item name="android:text">@string/default_value_text</item>
+    </style>
+
+    <style name="LauncherButtonStyle" parent="Base.TextAppearance.AppCompat.Button">
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">36sp</item>
     </style>
 
 </resources>
