@@ -21,9 +21,7 @@ private const val STOP_BUTTON_VISIBILITY_KEY: String = "STOP_BUTTON_VISIBILITY_K
 private const val BUTTONS_LAYOUT_VISIBILITY_KEY: String = "BUTTONS_LAYOUT_VISIBILITY_KEY"
 
 class MainScreenFragment : Fragment() {
-    private lateinit var hoursField: TextView
-    private lateinit var minutesField: TextView
-    private lateinit var secondsField: TextView
+    private lateinit var timeField: TextView
     private lateinit var millisecondsField: TextView
     private lateinit var startButton: Button
     private lateinit var stopButton: Button
@@ -45,13 +43,13 @@ class MainScreenFragment : Fragment() {
         override fun onServiceConnected(componentName: ComponentName?, binder: IBinder?) {
             val customBinder = binder as StopWatchService.CustomBinder
             usingService = customBinder.getService()
-            restoreValues()
+            updateValues()
         }
     }
 
     private val changeTimeReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            restoreValues()
+            updateValues()
         }
     }
 
@@ -93,9 +91,7 @@ class MainScreenFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         with(view) {
-            hoursField = findViewById(R.id.hours_field)
-            minutesField = findViewById(R.id.minutes_field)
-            secondsField = findViewById(R.id.seconds_field)
+            timeField = findViewById(R.id.time_field)
             millisecondsField = findViewById(R.id.milliseconds_field)
             startButton = findViewById(R.id.start_button)
             buttonsLayout = findViewById(R.id.buttons_layout)
@@ -103,7 +99,7 @@ class MainScreenFragment : Fragment() {
             continueButton = findViewById(R.id.continue_button)
             resetButton = findViewById(R.id.reset_button)
 
-            if(savedInstanceState != null) {
+            if (savedInstanceState != null) {
                 startButton.visibility = savedInstanceState.getInt(START_BUTTON_VISIBILITY_KEY)
                 stopButton.visibility = savedInstanceState.getInt(STOP_BUTTON_VISIBILITY_KEY)
                 buttonsLayout.visibility = savedInstanceState.getInt(BUTTONS_LAYOUT_VISIBILITY_KEY)
@@ -120,7 +116,7 @@ class MainScreenFragment : Fragment() {
             stopButton.visibility = View.VISIBLE
             startButton.visibility = View.GONE
 
-            if(!isBound) {
+            if (!isBound) {
                 activity!!.startService(serviceIntent)
                 isBound = true
             }
@@ -146,7 +142,7 @@ class MainScreenFragment : Fragment() {
 
             usingService.reset()
 
-            if(isBound) {
+            if (isBound) {
                 activity?.stopService(serviceIntent)
                 isBound = false
             }
@@ -162,18 +158,14 @@ class MainScreenFragment : Fragment() {
     }
 
     private fun resetTimeValues() {
-        hoursField.text = DEFAULT_TIME_VALUE
-        minutesField.text = DEFAULT_TIME_VALUE
-        secondsField.text = DEFAULT_TIME_VALUE
-        millisecondsField.text = DEFAULT_TIME_VALUE
+        timeField.text = DEFAULT_TIME_VALUE
+        millisecondsField.text = DEFAULT_MILLISECONDS_VALUE
     }
 
-    private fun restoreValues() {
+    private fun updateValues() {
         with(usingService) {
+            timeField.text = TimeUtil.getTimeUnits(totalMilliseconds)
             millisecondsField.text = TimeUtil.getMillisecondsTextValue(currentMilliseconds)
-            secondsField.text = TimeUtil.getTimeUnits(totalMilliseconds)
-            minutesField.text = TimeUtil.getTimeUnits(totalMilliseconds = totalMilliseconds, timeUnit = MINUTES_KEY)
-            hoursField.text = TimeUtil.getTimeUnits(totalMilliseconds = totalMilliseconds, timeUnit = HOURS_KEY)
         }
     }
 }
